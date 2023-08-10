@@ -24,6 +24,8 @@ from vedbus import VeDbusService
 
 class DbusShelly3emService:
   def __init__(self, paths, productname='Shelly 3EM', connection='Shelly 3EM HTTP JSON service'):
+    self._config = None
+      
     config = self._getConfig()
     deviceinstance = int(config['DEFAULT']['DeviceInstance'])
     customname = config['DEFAULT']['CustomName']
@@ -91,9 +93,10 @@ class DbusShelly3emService:
  
  
   def _getConfig(self):
-    config = configparser.ConfigParser()
-    config.read("%s/config.ini" % (os.path.dirname(os.path.realpath(__file__))))
-    return config;
+    if self._config is None:  
+        self._config = configparser.ConfigParser()
+        self._config.read("%s/config.ini" % (os.path.dirname(os.path.realpath(__file__))))
+    return self._config;
  
  
   def _getSignOfLifeInterval(self):
